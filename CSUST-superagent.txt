@@ -1,0 +1,22 @@
+var http = require("http");
+var cheerio = require('cheerio');
+var superagent = require("superagent");
+var charset = require("superagent-charset");
+var fs = require("fs");
+var request = charset(superagent);
+var url = "http://xk.csust.edu.cn/znpk/Pri_StuSel_Drawimg.aspx?type=2&w=977&h=420&xnxq=20181&px=0";
+var cookies = "ASP.NET_SessionId=d0e5dj45lmpizczjw22y1x55";
+function the_page(URL,callback) {
+    request.get(URL)
+        .set('Content-Type', 'text/html; charset=gb2312')
+        .set("Cookie",cookies)
+        .charset('gb2312')
+        .end(function (err,res) {
+            if(err)return ;
+            var $ =  cheerio.load(res.text,{decodeEntities: false});
+            console.log(res.text);
+            if(res)
+                callback();
+        });
+}
+the_page(url,function (err,res) {console(1)});
